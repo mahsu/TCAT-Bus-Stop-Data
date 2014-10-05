@@ -14,7 +14,8 @@ class Stop:
 		self.lon = lon
 
 	def toCSV(self):
-		self.addl = '"' + self.addl + '"' #wrap addl in quotes
+		self.name = '"' + self.name.replace('"','""') + '"' #wrap in quotes and escape '"''
+		self.addl = '"' + self.addl.replace('"','""') + '"'
 		return("{},{},{},{},{},{},{}\n".format(self.id,self.name,self.zone,self.lat,self.lon,self.area,self.addl))
 
 #-------------------------------------------------
@@ -43,7 +44,8 @@ for link in links:
 	addl = addl.replace("\n","") #strip newlines
 	mapurl = stop.find("a", text="View Stop On Map").get("href") #?lat=42.393639&lon=-76.362834&stopid=9368
 	mapquery = parse_qsl(urlparse(mapurl).query)
-	#	[('lat', '42.458150'), ('lon', '-76.475667'), ('stopid', '3660')]
+	
+	#[('lat', '42.458150'), ('lon', '-76.475667'), ('stopid', '3660')]
 	lat = mapquery[0][1]
 	lon = mapquery[1][1]
 	stopid = mapquery[2][1]
